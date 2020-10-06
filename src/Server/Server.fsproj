@@ -5,6 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Models\Provider.fs" />
+
     <Compile Include="Server.fs" />
   </ItemGroup>
   <ItemGroup>
