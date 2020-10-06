@@ -13,6 +13,8 @@
     <Compile Include="ContextFactory.fs" />
 
     <Compile Include="RepositoryLayer/IRepository.fs" />
+    <Compile Include="RepositoryLayer/Repository.fs" />
+
 
     <Compile Include="Server.fs" />
   </ItemGroup>
