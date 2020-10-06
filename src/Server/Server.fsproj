@@ -7,6 +7,7 @@
   <ItemGroup>
     <Compile Include="Models\Provider.fs" />
     <Compile Include="Models\CurrencyPair.fs" />
+    <Compile Include="Models\PriceRecord.fs" />
 
     <Compile Include="Server.fs" />
   </ItemGroup>
