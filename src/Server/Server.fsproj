@@ -10,6 +10,7 @@
     <Compile Include="Models\PriceRecord.fs" />
 
     <Compile Include="Context.fs" />
+    <Compile Include="ContextFactory.fs" />
 
     <Compile Include="Server.fs" />
   </ItemGroup>
