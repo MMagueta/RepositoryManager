@@ -21,6 +21,6 @@ type RepositoryContext(options : DbContextOptions<RepositoryContext>) =
     member public this._PriceRecords       with    get()      = this.PriceRecords
                                            and     set value  = this.PriceRecords <- value 
 
-    member this.GetProvider (id:int) = this.Providers.Find(id)
-    member this.GetCPair (id:int) = this.CPairs.Find(id)
-    member this.GetPriceRecord (id:int) = this.PriceRecords.Find(id)
+    // member this.GetProvider (id:int) = this.Providers.Find(id)
+    // member this.GetCPair (id:int) = this.CPairs.Find(id)
+    // member this.GetPriceRecord (id:int) = this.PriceRecords.Find(id)
