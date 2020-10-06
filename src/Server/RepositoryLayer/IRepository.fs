@@ -4,6 +4,6 @@ open System
 open System.Collections.Generic
 open System.Linq.Expressions
 
-type IRepository = 
-    abstract member Get : id : int -> 'a
-    abstract member Add : model : 'a -> unit
+type IRepository<'T> = 
+    abstract Get : int -> 'T
+    // abstract Add : 'T -> unit
