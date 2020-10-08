@@ -14,19 +14,29 @@ type PriceRecordsRepository(contextIn : DbContext) =
     let context = contextIn
     member this.GetByCPairs(cpairs_id : int) = 
         context.Set<PriceRecordItem>() |> Seq.tryFind (fun x -> x.CPair.Id = cpairs_id)
+
     member this.GetByProviders(providers_id : int) = 
         context.Set<PriceRecordItem>() |> Seq.tryFind (fun x -> x.Provider.Id = providers_id)
+
     member this.GetByMaxDate(max_date : DateTime) = 
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Date <= max_date)
         |> List.ofSeq
         |> fun (x) -> match x with | [] -> None | _ -> Some(x)
 
     member this.GetByMinDate(min_date : DateTime) = 
-        context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Date >= min_date)
+        context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Date <= min_date)
+        |> List.ofSeq
+        |> fun (x) -> match x with | [] -> None | _ -> Some(x)
+
+    member this.GetByDateRange(min_date : DateTime, max_date : DateTime) = 
+        (this.GetByMinDate(min_date) |> fun (x) -> match x with | None -> [] | Some(x) -> x) @ (this.GetByMaxDate(max_date) |> fun (x) -> match x with | None -> [] | Some(x) -> x) |> List.distinct |> fun (x) -> match x with | [] -> None | _ -> Some(x) 
+
     member this.GetByMaxQuantity(max_quantity : int) = 
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Quantity <= max_quantity)
+
     member this.GetByMinQuantity(min_quantity : int) = 
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Quantity >= min_quantity)
+
     member this.GetAllByDate() = 
         context.Set<PriceRecordItem>()
         |> Seq.groupBy (fun x -> x.SubProvider) //Will add different records under a same subprovider

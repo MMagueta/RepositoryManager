@@ -17,8 +17,18 @@ module UnitOfWork =
 
         member this.GetPriceRecordsByCPairs(cpairs_id : int) = 
             pricerecords.GetByCPairs(cpairs_id)
+
+        member this.GetPriceRecordsByProviders(providers_id : int) = 
+            pricerecords.GetByProviders(providers_id)
+
         member this.FilterByMaxDate(max_date : System.DateTime) = 
             max_date |> pricerecords.GetByMaxDate
+
+        member this.FilterByMinDate(min_date : System.DateTime) = 
+            min_date |> pricerecords.GetByMinDate
+
+        member this.GetByDateRange(min_date : System.DateTime, max_date : System.DateTime) = 
+            (min_date, max_date) |> pricerecords.GetByDateRange
 
         member this.Complete() =
             context.SaveChanges() |> ignore

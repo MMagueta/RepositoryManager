@@ -20,16 +20,13 @@ module Server =
      
     let webApp =
         choose [
-            subRoute "/prices" (
+            GET >=>
                 choose [
-                    GET >=>
-                        choose [
-                            routef "/%i" FindPriceRecordsByCPairs 
-                            routef "/%s" FilterByMaxDate 
-                        ]
+                    routef "/prices/bycpair/%i" FindPriceRecordsByCPairs
+                    routef "/prices/byprovider/%i" GetPriceRecordsByProviders
+                    routef "/prices/bydaterange/%s/%s" GetByDateRange
                 ]
-            )
-        ]
+            setStatusCode 404 >=> text "Not Found" ]
     
     
     let app =
