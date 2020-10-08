@@ -9,9 +9,6 @@ open Saturn
 
 open Shared
 
-
-// run app
-
 (*
     http://localhost:8085/
 *)
@@ -20,7 +17,7 @@ module Server =
     let webApp =
         router {
             get "/" (["A";"B";"C"] |> json)
-            get Route.hello ("Hello from SAFE!" |> json)
+            forward "/providers" Provider.Controller.resource
         }
 
     let app =

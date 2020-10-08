@@ -14,8 +14,8 @@
 
     <Compile Include="RepositoryLayer/IRepository.fs" />
     <Compile Include="RepositoryLayer/Repository.fs" />
-    <Compile Include="RepositoryLayer/IMyRepo.fs" />
-    <Compile Include="RepositoryLayer/MyRepo.fs" />
+
+    <Compile Include="Controllers/ProvidersController.fs" />
 
     <Compile Include="Server.fs" />
   </ItemGroup>
