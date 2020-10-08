@@ -7,19 +7,30 @@ open Microsoft.AspNetCore.Hosting
 open Giraffe
 open Saturn
 
-open Shared
+open Models
+open Context
+open Provider.Controller
+open Repository.UnitOfWork
 
 (*
     http://localhost:8085/
 *)
+
 module Server = 
-
+     
     let webApp =
-        router {
-            get "/" (["A";"B";"C"] |> json)
-            forward "/providers" Provider.Controller.resource
-        }
-
+        choose [
+            subRoute "/prices" (
+                choose [
+                    GET >=>
+                        choose [
+                            routef "/%i" FindPriceRecordsByCPairs //GET /prices/%i
+                        ]
+                ]
+            )
+        ]
+    
+    
     let app =
         application {
             url "http://0.0.0.0:8085"
@@ -32,7 +43,45 @@ module Server =
 
     let exitCode = 0
 
+    let init(context : RepositoryContext) = 
+        context.Database.EnsureDeleted() |> ignore
+        context.Database.EnsureCreated() |> ignore
+        
+        let tdItems : ProviderItem[] = 
+            [|
+                { Id = 0; Name = "A" }
+                { Id = 0; Name = "B" }
+                { Id = 0; Name = "C" }
+            |]
+
+        context.Providers.AddRange(tdItems) |> ignore
+        let tdItems : CurrencyPairItem[] = 
+            [|
+                { Id = 0; Label = "A/B" }
+                { Id = 0; Label = "Z/H" }
+            |]
+
+        context.CPairs.AddRange(tdItems) |> ignore
+        context.SaveChanges() |> ignore 
+        let prov = ProvidersRepository(context)
+        let pairs = CurrencyPairsRepository(context)
+        let d1 = System.DateTime.Parse "1-1-2011"
+        let d2 = System.DateTime.Parse "1-2-2011"
+        let d3 = System.DateTime.Parse "3-2-2011"
+        let d4 = System.DateTime.Parse "1-3-2011"
+        let tdItems : PriceRecordItem[] = 
+            [|
+                { Id = 0; Date = d2; Price = 1.4213; Quantity = 1238; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+                { Id = 0; Date = d1; Price = 1.5213; Quantity = 1238; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+                { Id = 0; Date = d4; Price = 1.6213; Quantity = 1238; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+                { Id = 0; Date = d3; Price = 0.9536; Quantity = 1238; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "overall" }
+            |]
+
+        context.PriceRecords.AddRange(tdItems) |> ignore
+        context.SaveChanges() |> ignore 
+
     [<EntryPoint>]
     let main args =
+        init(ctx)
         run app
         exitCode
