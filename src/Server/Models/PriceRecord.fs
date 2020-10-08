@@ -16,4 +16,6 @@ type PriceRecordItem =
         Provider : ProviderItem
         [<Required>]
         CPair : CurrencyPairItem
+        [<Required>]
+        SubProvider : string
     }
