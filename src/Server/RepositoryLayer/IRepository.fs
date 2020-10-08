@@ -6,4 +6,6 @@ open System.Linq.Expressions
 
 type IRepository<'T> = 
     abstract GetById : int -> 'T
-    // abstract Add : 'T -> unit
+    abstract Add : 'T -> unit
+    // abstract Remove : 'T -> unit
+    // abstract Where : 'a -> seq<'T>

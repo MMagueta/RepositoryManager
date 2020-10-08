@@ -12,3 +12,4 @@ type Repository(contextIn : DbContext) =
     let context = contextIn
 
     member this.GetById<'T>(id : int) = context.Set<'T>().Find(id)
+    member this.Add<'T>(object : 'T) = context.Set<'T>().Add(object)
