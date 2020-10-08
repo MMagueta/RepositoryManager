@@ -10,8 +10,10 @@ open Models
 open Repository.UnitOfWork
 
 module Controller =
-
-    let FindPriceRecordsByCPairs cpairs_id =
-        match uow.GetPriceRecordsByCPairs(cpairs_id) with
+    let match_pattern (matcher)= 
+        match matcher with
         | Some(record) -> record |> json
         | None -> setStatusCode 404 >=> text "Records not found"
+
+    let FindPriceRecordsByCPairs cpairs_id =
+        cpairs_id |> uow.GetPriceRecordsByCPairs |> match_pattern
