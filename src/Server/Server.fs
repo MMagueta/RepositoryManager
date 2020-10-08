@@ -25,6 +25,8 @@ module Server =
                     routef "/prices/bycpair/%i" FindPriceRecordsByCPairs
                     routef "/prices/byprovider/%i" GetPriceRecordsByProviders
                     routef "/prices/bydaterange/%s/%s" GetByDateRange
+                    routef "/prices/bymaxdate/%s" FilterByMaxDate
+                    routef "/prices/bymindate/%s" FilterByMinDate
                 ]
             setStatusCode 404 >=> text "Not Found" ]
     
