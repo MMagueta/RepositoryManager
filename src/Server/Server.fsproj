@@ -17,6 +17,8 @@
     <Compile Include="RepositoryLayer/UnitOfWork.fs" />
 
     <Compile Include="RepositoryLayer/ProvidersRepository.fs" />
+    <Compile Include="RepositoryLayer/CurrencyPairsRepository.fs" />
+    <Compile Include="RepositoryLayer/PriceRecordsRepository.fs" />
 
     <Compile Include="Controllers/ProvidersController.fs" />
 
