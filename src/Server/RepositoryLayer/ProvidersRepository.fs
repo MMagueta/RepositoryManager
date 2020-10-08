@@ -7,8 +7,10 @@ open System.Linq
 open System.Linq.Expressions
 
 open Context
+open Models
 
 type ProvidersRepository(contextIn : DbContext) = 
+    inherit Repository(contextIn)
     let context = contextIn
-
-    member this.GetById<'T>(id : int) = context.Set<'T>().Find(id)
+    member this.GetByName(name : string) = 
+        context.Set<ProviderItem>() |> Seq.filter (fun x -> x.Name = name)
