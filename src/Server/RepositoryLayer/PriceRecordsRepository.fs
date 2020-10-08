@@ -12,7 +12,7 @@ open Models
 type PriceRecordsRepository(contextIn : DbContext) = 
     inherit Repository(contextIn)
     let context = contextIn
-    member this.GetByCPairs(cpairs_ids : int) = 
+    member this.GetByCPairs(cpairs_id : int) = 
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.CPair.Id = cpairs_id)
     member this.GetByProviders(providers_id : int) = 
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Provider.Id = providers_id)
