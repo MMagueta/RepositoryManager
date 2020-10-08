@@ -18,6 +18,9 @@ type PriceRecordsRepository(contextIn : DbContext) =
         context.Set<PriceRecordItem>() |> Seq.tryFind (fun x -> x.Provider.Id = providers_id)
     member this.GetByMaxDate(max_date : DateTime) = 
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Date <= max_date)
+        |> List.ofSeq
+        |> fun (x) -> match x with | [] -> None | _ -> Some(x)
+
     member this.GetByMinDate(min_date : DateTime) = 
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Date >= min_date)
     member this.GetByMaxQuantity(max_quantity : int) = 

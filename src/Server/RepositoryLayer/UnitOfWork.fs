@@ -17,6 +17,8 @@ module UnitOfWork =
 
         member this.GetPriceRecordsByCPairs(cpairs_id : int) = 
             pricerecords.GetByCPairs(cpairs_id)
+        member this.FilterByMaxDate(max_date : System.DateTime) = 
+            max_date |> pricerecords.GetByMaxDate
 
         member this.Complete() =
             context.SaveChanges() |> ignore

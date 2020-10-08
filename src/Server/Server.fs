@@ -24,7 +24,8 @@ module Server =
                 choose [
                     GET >=>
                         choose [
-                            routef "/%i" FindPriceRecordsByCPairs //GET /prices/%i
+                            routef "/%i" FindPriceRecordsByCPairs 
+                            routef "/%s" FilterByMaxDate 
                         ]
                 ]
             )

@@ -17,3 +17,6 @@ module Controller =
 
     let FindPriceRecordsByCPairs cpairs_id =
         cpairs_id |> uow.GetPriceRecordsByCPairs |> match_pattern
+
+    let FilterByMaxDate max_date = 
+        max_date |> System.DateTime.Parse |>  uow.FilterByMaxDate |> match_pattern
