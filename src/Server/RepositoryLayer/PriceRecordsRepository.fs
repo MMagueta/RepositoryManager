@@ -13,9 +13,9 @@ type PriceRecordsRepository(contextIn : DbContext) =
     inherit Repository(contextIn)
     let context = contextIn
     member this.GetByCPairs(cpairs_id : int) = 
-        context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.CPair.Id = cpairs_id)
+        context.Set<PriceRecordItem>() |> Seq.tryFind (fun x -> x.CPair.Id = cpairs_id)
     member this.GetByProviders(providers_id : int) = 
-        context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Provider.Id = providers_id)
+        context.Set<PriceRecordItem>() |> Seq.tryFind (fun x -> x.Provider.Id = providers_id)
     member this.GetByMaxDate(max_date : DateTime) = 
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Date <= max_date)
     member this.GetByMinDate(min_date : DateTime) = 
