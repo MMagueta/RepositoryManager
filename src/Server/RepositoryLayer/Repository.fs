@@ -11,4 +11,4 @@ open Context
 type Repository(contextIn : DbContext) = 
     let context = contextIn
 
-    member this.Get<'T>(id : int) = context.Set<'T>().Find(id)
+    member this.GetById<'T>(id : int) = context.Set<'T>().Find(id)

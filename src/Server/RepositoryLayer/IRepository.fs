@@ -5,5 +5,5 @@ open System.Collections.Generic
 open System.Linq.Expressions
 
 type IRepository<'T> = 
-    abstract Get : int -> 'T
+    abstract GetById : int -> 'T
     // abstract Add : 'T -> unit
