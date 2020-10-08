@@ -14,3 +14,5 @@ type PriceRecordsRepository(contextIn : DbContext) =
     let context = contextIn
     member this.GetByCPairs(cpairs_ids : list<int>) = 
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> List.contains x.CPair.Id cpairs_ids)
+    member this.GetByProviders(providers_ids : list<int>) = 
+        context.Set<PriceRecordItem>() |> Seq.filter (fun x -> List.contains x.Provider.Id providers_ids)
