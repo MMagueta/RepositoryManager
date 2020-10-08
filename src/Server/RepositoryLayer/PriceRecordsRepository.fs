@@ -24,4 +24,8 @@ type PriceRecordsRepository(contextIn : DbContext) =
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Quantity <= max_quantity)
     member this.GetByMinQuantity(min_quantity : int) = 
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Quantity >= min_quantity)
-    
+    member this.GetAllByDate = 
+        context.Set<PriceRecordItem>()
+        |> Seq.groupBy (fun x -> x.SubProvider)
+        |> Seq.map (fun (key, values) -> (key, values |> Seq.map (fun x -> x.Date), values |> Seq.map (fun x -> x.Price) ))
+        |> Seq.map (fun (key, dates, prices) -> (key, dates |> Seq.sortBy (fun x -> x), prices ))
