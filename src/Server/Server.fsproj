@@ -20,6 +20,8 @@
     <Compile Include="RepositoryLayer/UnitOfWork.fs" />
 
     <Compile Include="Controllers/PriceRecordsController.fs" />
+    <Compile Include="Controllers/CurrencyPairsController.fs" />
+    <Compile Include="Controllers/ProvidersController.fs" />
 
     <Compile Include="Server.fs" />
   </ItemGroup>

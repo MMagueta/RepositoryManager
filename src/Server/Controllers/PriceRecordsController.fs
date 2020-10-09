@@ -60,3 +60,5 @@ module Controller =
                     | None -> insertionProcedure(new_price_record)
                 ) next ctx
             }
+
+

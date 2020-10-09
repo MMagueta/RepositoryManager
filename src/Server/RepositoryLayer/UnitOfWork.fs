@@ -60,6 +60,18 @@ module UnitOfWork =
             | (_, null) -> Some("Currency Pair not found.")
             | (_ , _) -> aggregateAndRegister(new_registry)
 
+        member this.InsertProvider(new_registry : ProviderItem) = 
+            this.Providers.Insert(new_registry) |> ignore //Insert into the context
+            this.Complete() |> ignore //Calls the context to save the changes
+            None // None for matching the return
+            //TODO add validation for the complete and insert function returns
+
+        member this.InsertCurrencyPair(new_registry : CurrencyPairItem) = 
+            this.CRPairs.Insert(new_registry) |> ignore //Insert into the context
+            this.Complete() |> ignore //Calls the context to save the changes
+            None // None for matching the return
+            //TODO add validation for the complete and insert function returns
+
         member this.Complete() =
             context.SaveChanges() |> ignore
         member this.Dispose =

@@ -10,6 +10,8 @@ open Saturn
 open Models
 open Context
 open PriceRecords.Controller
+open CurrencyPair.Controller
+open Providers.Controller
 open Repository.UnitOfWork
 
 (*
@@ -35,6 +37,9 @@ module Server =
             POST >=>
                 choose [
                     route "/prices/" >=> InsertPriceRecord()
+                    route "/providers/" >=> InsertProvider()
+                    
+
                 ]
             setStatusCode 404 >=> text "Not Found" ]
     
