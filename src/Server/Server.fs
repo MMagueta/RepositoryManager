@@ -30,7 +30,7 @@ module Server =
                     routef "/prices/subprovider/%s/%s"  GetAllPricesInOrderByDate
                     routef "/prices/bymaxquantity/%i" FilterByMaxQuantity
                     routef "/prices/byminquantity/%i" FilterByMinQuantity
-                    routef "/prices/marketdata/%s/%s/%i/%i" GetMarketData
+                    routef "/prices/marketdata/min_date=%s/max_date=%s/provider=%i/pair=%i" GetMarketData
                 ]
             setStatusCode 404 >=> text "Not Found" ]
     

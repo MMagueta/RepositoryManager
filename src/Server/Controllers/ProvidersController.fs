@@ -3,6 +3,7 @@ namespace Provider
 open Saturn
 open Microsoft.AspNetCore.Http
 open FSharp.Control.Tasks.ContextInsensitive
+open FSharp.Collections
 open Giraffe
 open Repository
 open Context
@@ -38,6 +39,6 @@ module Controller =
 
     let GetAllPricesInOrderByDate (min_date, max_date) = 
         (uow.GetAllPricesInOrderByDate (min_date |> System.DateTime.Parse, max_date |> System.DateTime.Parse)) |> match_pattern
-    
-    let GetMarketData (min_date, max_date, currency_pair_id, provider_id) = 
-        (uow.GetMarketData (min_date |> System.DateTime.Parse, max_date |> System.DateTime.Parse, currency_pair_id, provider_id)) |> match_pattern
+
+    let GetMarketData(min_date, max_date, currency_pair_id, provider_id) = 
+        (uow.GetMarketData (min_date |> System.DateTime.Parse, max_date |> System.DateTime.Parse, provider_id, currency_pair_id)) |> match_pattern
