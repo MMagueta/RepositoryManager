@@ -28,6 +28,8 @@ module Server =
                     routef "/prices/bymaxdate/%s" FilterByMaxDate
                     routef "/prices/bymindate/%s" FilterByMinDate
                     routef "/prices/subprovider/%s/%s"  GetAllPricesInOrderByDate
+                    routef "/prices/bymaxquantity/%i" FilterByMaxQuantity
+                    routef "/prices/byminquantity/%i" FilterByMinQuantity
                 ]
             setStatusCode 404 >=> text "Not Found" ]
     

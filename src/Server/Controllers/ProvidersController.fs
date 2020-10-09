@@ -27,5 +27,14 @@ module Controller =
     let FilterByMinDate (min_date) = 
         min_date |> System.DateTime.Parse |> uow.FilterByMinDate |> match_pattern
 
+    let FilterByMaxQuantity (max_qtd) = 
+        max_qtd |> uow.FilterByMaxQuantity |> match_pattern
+
+    let FilterByMinQuantity (min_qtd) = 
+        min_qtd |> uow.FilterByMinQuantity |> match_pattern
+
     let FilterByMaxDate (max_date) = 
         max_date |> System.DateTime.Parse |> uow.FilterByMaxDate |> match_pattern
+
+    let GetAllPricesInOrderByDate (min_date, max_date) = 
+        (uow.GetAllPricesInOrderByDate (min_date |> System.DateTime.Parse, max_date |> System.DateTime.Parse)) |> match_pattern

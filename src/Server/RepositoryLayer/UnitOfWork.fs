@@ -27,6 +27,12 @@ module UnitOfWork =
         member this.FilterByMinDate(min_date : System.DateTime) = 
             min_date |> pricerecords.GetByMinDate
 
+        member this.FilterByMaxQuantity(max_qtd : int) = 
+            max_qtd |> pricerecords.GetByMaxQuantity
+
+        member this.FilterByMinQuantity(min_qtd : int) = 
+            min_qtd |> pricerecords.GetByMinQuantity
+
         member this.GetByDateRange(min_date : System.DateTime, max_date : System.DateTime) = 
             (min_date, max_date) |> pricerecords.GetByDateRange
 
