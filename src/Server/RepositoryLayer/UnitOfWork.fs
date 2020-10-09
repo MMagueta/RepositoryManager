@@ -30,6 +30,9 @@ module UnitOfWork =
         member this.GetByDateRange(min_date : System.DateTime, max_date : System.DateTime) = 
             (min_date, max_date) |> pricerecords.GetByDateRange
 
+        member this.GetAllPricesInOrderByDate(min_date : System.DateTime, max_date : System.DateTime) = 
+            (min_date, max_date) |> pricerecords.GetAllOrderedInRange
+
         member this.Complete() =
             context.SaveChanges() |> ignore
         member this.Dispose =

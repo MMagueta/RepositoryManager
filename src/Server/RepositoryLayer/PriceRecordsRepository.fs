@@ -41,10 +41,18 @@ type PriceRecordsRepository(contextIn : DbContext) =
     member this.GetByMinQuantity(min_quantity : int) = 
         context.Set<PriceRecordItem>() |> Seq.filter (fun x -> x.Quantity >= min_quantity) |> List.ofSeq |> PackListSomeOrNone
 
-    member this.GetAllByDate() = 
+    member this.GetAllOrderedInRange (min_date : DateTime, max_date : DateTime) =
         context.Set<PriceRecordItem>()
+        |> Seq.groupBy (fun x -> x.SubProvider) 
+        |> Seq.map (fun (key, values) -> (key,  values |> Seq.filter (fun x -> (x.Date >= min_date && x.Date <= max_date)) |> Seq.sortBy (fun x -> x.Date) |> List.ofSeq ))
+        |> List.ofSeq
+        |> PackListSomeOrNone
+    
+        
+
+        (* context.Set<PriceRecordItem>()
         |> Seq.groupBy (fun x -> x.SubProvider) //Will add different records under a same subprovider
         |> Seq.map (fun (key, values) -> (key,  values |> Seq.map (fun x -> (x.Date, x.Price) )))
         |> Seq.map (fun (k,t) -> (k, t |> Seq.sortBy (fun (a,b) -> a ) |> List.ofSeq))
         |> List.ofSeq
-        |> PackListSomeOrNone
+        |> PackListSomeOrNone *)
