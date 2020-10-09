@@ -51,12 +51,9 @@ module Controller =
             task {
                 let! new_price_record = ctx.BindJsonAsync<PriceRecordItem>()
                 let insertionProcedure(registry) =
-                    uow.InsertPriceRecord(new_price_record)
-                    Successful.OK new_price_record
-                    (* match uow.InsertPriceRecord(new_price_record) with
+                    match uow.InsertPriceRecord(registry) with
                     | Some msg -> RequestErrors.BAD_REQUEST msg
-                    | None -> Successful.OK new_price_record
-                     *)
+                    | None -> Successful.OK registry
                 return! (
                     match new_price_record.Errors() with 
                     | Some msg -> RequestErrors.BAD_REQUEST msg

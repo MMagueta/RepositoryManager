@@ -49,11 +49,16 @@ module UnitOfWork =
             |> fun x -> match x with | [] -> None | _ -> Some(x) 
 
         member this.InsertPriceRecord(new_registry : PriceRecordItem) = 
-            let mutable aggregate_data_mutation = new_registry 
-            aggregate_data_mutation.Provider <- this.Providers.GetById<ProviderItem>(aggregate_data_mutation.Provider.Id)
-            aggregate_data_mutation.CPair <- this.CRPairs.GetById<CurrencyPairItem>(aggregate_data_mutation.CPair.Id)
-            this.Pricerecords.Insert(new_registry) |> ignore
-            this.Complete() 
+            let aggregateAndRegister(new_registry : PriceRecordItem) = // Handle the swap of aggregate input and insert
+                new_registry.Provider <- this.Providers.GetById<ProviderItem>(new_registry.Provider.Id) //Searches for existing registry and swaps it with the input
+                new_registry.CPair <- this.CRPairs.GetById<CurrencyPairItem>(new_registry.CPair.Id)
+                this.Pricerecords.Insert(new_registry) |> ignore //Finally insert into the context
+                this.Complete() |> ignore //Calls the context to save the changes
+                None // None for matching the return
+            match (box (this.Providers.GetById<ProviderItem>(new_registry.Provider.Id)), box (this.Providers.GetById<CurrencyPairItem>(new_registry.CPair.Id))) with
+            | (null, _) -> Some("Provider not found.")
+            | (_, null) -> Some("Currency Pair not found.")
+            | (_ , _) -> aggregateAndRegister(new_registry)
 
         member this.Complete() =
             context.SaveChanges() |> ignore
