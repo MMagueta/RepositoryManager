@@ -49,6 +49,7 @@ module UnitOfWork =
             |> fun x -> match x with | [] -> None | _ -> Some(x) 
 
         member this.InsertPriceRecord(new_registry : PriceRecordItem) = 
+            
             pricerecords.Insert(new_registry) |> ignore
             this.Complete() 
 

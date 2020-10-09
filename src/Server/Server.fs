@@ -34,7 +34,7 @@ module Server =
                 ]
             POST >=>
                 choose [
-                    route "/prices/" >=> InsertPriceRecord
+                    route "/prices/" >=> InsertPriceRecord()
                 ]
             setStatusCode 404 >=> text "Not Found" ]
     
