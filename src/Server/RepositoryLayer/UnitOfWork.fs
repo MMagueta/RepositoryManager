@@ -7,6 +7,8 @@ open System.Runtime.Serialization.Formatters.Binary
 open System.Runtime.Serialization.Json
 open System.IO
 
+open Models
+
 module UnitOfWork = 
     let ctx = ContextFactory.Create("Host=database-3.cnnri9trsf5s.us-east-2.rds.amazonaws.com;Port=5432;Pooling=true;Database=teste_pg;User Id=postgres;Password=159753123")
     type UnitOfWork(contextIn : RepositoryContext) =
@@ -45,6 +47,10 @@ module UnitOfWork =
             |> fun data -> match data with | None -> [] | Some(x) -> x
             |> List.map (fun (key, values) -> (key, values |> List.filter (fun data -> data.CPair.Id = currency_pair_id && data.Provider.Id = provider_id )))
             |> fun x -> match x with | [] -> None | _ -> Some(x) 
+
+        member this.InsertPriceRecord(new_registry : PriceRecordItem) = 
+            pricerecords.Insert(new_registry) |> ignore
+            this.Complete() 
 
         member this.Complete() =
             context.SaveChanges() |> ignore

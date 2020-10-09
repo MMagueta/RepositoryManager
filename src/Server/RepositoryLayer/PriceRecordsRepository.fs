@@ -47,8 +47,9 @@ type PriceRecordsRepository(contextIn : DbContext) =
         |> Seq.map (fun (key, values) -> (key,  values |> Seq.filter (fun x -> (x.Date >= min_date && x.Date <= max_date)) |> Seq.sortBy (fun x -> x.Date) |> List.ofSeq ))
         |> List.ofSeq
         |> PackListSomeOrNone
-    
-        
+
+    member this.Insert(new_registry : PriceRecordItem) = 
+        context.AddAsync(new_registry)
 
         (* context.Set<PriceRecordItem>()
         |> Seq.groupBy (fun x -> x.SubProvider) //Will add different records under a same subprovider

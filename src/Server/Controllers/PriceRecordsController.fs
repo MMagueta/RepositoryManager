@@ -5,6 +5,7 @@ open Microsoft.AspNetCore.Http
 open FSharp.Control.Tasks.ContextInsensitive
 open FSharp.Collections
 open Giraffe
+open FSharp.Control.Tasks.V2.ContextInsensitive
 open Repository
 open Context
 open Models
@@ -42,3 +43,13 @@ module Controller =
 
     let GetMarketData(min_date, max_date, currency_pair_id, provider_id) = 
         (uow.GetMarketData (min_date |> System.DateTime.Parse, max_date |> System.DateTime.Parse, provider_id, currency_pair_id)) |> match_pattern
+
+    //----------------------- POST -----------------------
+
+    let InsertPriceRecord = 
+        fun (next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let! new_price_record = ctx.BindModelAsync<PriceRecordItem>()
+                uow.InsertPriceRecord(new_price_record)
+                return! json new_price_record next ctx
+            }

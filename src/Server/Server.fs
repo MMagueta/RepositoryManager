@@ -32,6 +32,10 @@ module Server =
                     routef "/prices/byminquantity/%i" FilterByMinQuantity
                     routef "/prices/marketdata/min_date=%s/max_date=%s/provider=%i/pair=%i" GetMarketData
                 ]
+            POST >=>
+                choose [
+                    route "/prices/" >=> InsertPriceRecord
+                ]
             setStatusCode 404 >=> text "Not Found" ]
     
     
