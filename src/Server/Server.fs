@@ -38,7 +38,7 @@ module Server =
                 choose [
                     route "/prices/" >=> InsertPriceRecord()
                     route "/providers/" >=> InsertProvider()
-                    
+                    route "/currencypairs/" >=> InsertCurrencyPair()
 
                 ]
             setStatusCode 404 >=> text "Not Found" ]
