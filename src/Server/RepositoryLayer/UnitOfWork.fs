@@ -39,6 +39,13 @@ module UnitOfWork =
         member this.GetAllPricesInOrderByDate(min_date : System.DateTime, max_date : System.DateTime) = 
             (min_date, max_date) |> pricerecords.GetAllOrderedInRange
 
+        member this.GetMarketData(min_date : System.DateTime, max_date : System.DateTime, currency_pair_id : int, provider_id : int) = 
+            (min_date, max_date)
+            |> pricerecords.GetAllOrderedInRange
+            |> fun data -> match data with | None -> [] | Some(x) -> x
+            |> List.map (fun (key, values) -> (key, values |> List.filter (fun data -> data.CPair.Id = currency_pair_id && data.Provider.Id = provider_id )))
+            |> fun x -> match x with | [] -> None | _ -> Some(x) 
+
         member this.Complete() =
             context.SaveChanges() |> ignore
         member this.Dispose =
