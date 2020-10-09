@@ -50,7 +50,7 @@ module Controller =
         fun (next : HttpFunc) (ctx : HttpContext) ->
             task {
                 let! new_price_record = ctx.BindJsonAsync<PriceRecordItem>()
-                let insertion_procedure(registry) = 
+                let insertionProcedure(registry) =
                     uow.InsertPriceRecord(new_price_record)
                     Successful.OK new_price_record
                     (* match uow.InsertPriceRecord(new_price_record) with
@@ -60,6 +60,6 @@ module Controller =
                 return! (
                     match new_price_record.Errors() with 
                     | Some msg -> RequestErrors.BAD_REQUEST msg
-                    | None -> insertion_procedure(new_price_record)
+                    | None -> insertionProcedure(new_price_record)
                 ) next ctx
             }
