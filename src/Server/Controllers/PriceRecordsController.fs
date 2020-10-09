@@ -1,4 +1,4 @@
-namespace Provider
+namespace PriceRecords
 
 open Saturn
 open Microsoft.AspNetCore.Http

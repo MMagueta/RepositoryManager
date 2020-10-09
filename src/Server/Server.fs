@@ -9,7 +9,7 @@ open Saturn
 
 open Models
 open Context
-open Provider.Controller
+open PriceRecords.Controller
 open Repository.UnitOfWork
 
 (*

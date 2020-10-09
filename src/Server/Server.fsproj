@@ -19,7 +19,7 @@
     <Compile Include="RepositoryLayer/PriceRecordsRepository.fs" />
     <Compile Include="RepositoryLayer/UnitOfWork.fs" />
 
-    <Compile Include="Controllers/ProvidersController.fs" />
+    <Compile Include="Controllers/PriceRecordsController.fs" />
 
     <Compile Include="Server.fs" />
   </ItemGroup>
