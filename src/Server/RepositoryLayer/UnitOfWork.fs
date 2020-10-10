@@ -20,8 +20,9 @@ module UnitOfWork =
         member this.CRPairs = CurrencyPairsRepository(context)
         member this.Pricerecords = PriceRecordsRepository(context)
 
+        member this.PackListSomeOrNone x = match x with | [] -> None | _ -> Some(x) 
         member this.UnpackListSomeOrNone x = match x with | None -> [] | Some(x) -> x
-        member this.ReturnIQuery (x : IQueryable<'T>) = Some(x.ToArray<'T>())
+        member this.ReturnIQuery (x : IQueryable<'T>) = x.ToArray<'T>() |>  List.ofArray |> this.PackListSomeOrNone
 
         member this.GetPriceRecordsByCPairs(cpairs_id : int) = 
             this.Pricerecords.Where<PriceRecordItem>((fun (x : PriceRecordItem) -> x.CPair.Id.Equals(cpairs_id)))
