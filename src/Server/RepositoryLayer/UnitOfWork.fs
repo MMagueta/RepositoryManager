@@ -24,6 +24,18 @@ module UnitOfWork =
         member this.UnpackListSomeOrNone x = match x with | None -> [] | Some(x) -> x
         member this.ReturnIQuery (x : IQueryable<'T>) = x.ToArray<'T>() |>  List.ofArray |> this.PackListSomeOrNone
 
+        // CURRENCY PAIRS
+
+        member this.FindCPairById(id : int) = 
+            this.CRPairs.GetById<CurrencyPairItem>(id)
+
+        // PROVIDERS
+
+        member this.FindProviderById(id : int) = 
+            this.Providers.GetById<ProviderItem>(id)
+
+        // PRICE RECORDS
+
         member this.GetPriceRecordsByCPairs(cpairs_id : int) = 
             this.Pricerecords.Where<PriceRecordItem>((fun (x : PriceRecordItem) -> x.CPair.Id.Equals(cpairs_id)))
             |> this.ReturnIQuery

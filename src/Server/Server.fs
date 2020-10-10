@@ -33,6 +33,10 @@ module Server =
                     routef "/prices/bymaxquantity/%i" FilterByMaxQuantity
                     routef "/prices/byminquantity/%i" FilterByMinQuantity
                     routef "/prices/marketdata/min_date=%s/max_date=%s/provider=%i/pair=%i" GetMarketData
+
+                    routef "/cpairs/byid/%i" FindCPairById
+
+                    routef "/provider/byid/%i" FindProviderById
                 ]
             POST >=>
                 choose [

@@ -13,6 +13,8 @@ open Repository.UnitOfWork
 
 module Controller =
 
+    let FindCPairById(id : int) = 
+        id |> uow.FindCPairById |> json
 
     //----------------------- POST -----------------------
     let InsertCurrencyPair() = 

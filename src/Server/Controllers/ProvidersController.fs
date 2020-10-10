@@ -13,6 +13,8 @@ open Repository.UnitOfWork
 
 module Controller =
 
+    let FindProviderById(id : int) = 
+        id |> uow.FindProviderById |> json
 
     //----------------------- POST -----------------------
     let InsertProvider() = 
