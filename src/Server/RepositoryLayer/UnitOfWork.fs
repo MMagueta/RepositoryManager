@@ -21,32 +21,35 @@ module UnitOfWork =
         member this.Pricerecords = PriceRecordsRepository(context)
 
         member this.UnpackListSomeOrNone x = match x with | None -> [] | Some(x) -> x
-        member this.ReturnIQuery (x : IQueryable<'T>) = Some(x.ToList().[0])
-
-        //member this.WhereProviders(expression : Expression<Func<'T, bool>>) = 
-        //    this.Providers.Where<ProviderItem>(expression)
+        member this.ReturnIQuery (x : IQueryable<'T>) = Some(x.ToArray<'T>())
 
         member this.GetPriceRecordsByCPairs(cpairs_id : int) = 
             this.Pricerecords.Where<PriceRecordItem>((fun (x : PriceRecordItem) -> x.CPair.Id.Equals(cpairs_id)))
             |> this.ReturnIQuery
 
         member this.GetPriceRecordsByProviders(providers_id : int) = 
-            this.Pricerecords.GetByProviders(providers_id)
+            this.Pricerecords.Where<PriceRecordItem>((fun (x : PriceRecordItem) -> x.Provider.Id.Equals(providers_id)))
+            |> this.ReturnIQuery
 
         member this.FilterByMaxDate(max_date : System.DateTime) = 
-            max_date |> this.Pricerecords.GetByMaxDate
+            this.Pricerecords.Where<PriceRecordItem>((fun (x : PriceRecordItem) -> x.Date <= max_date))
+            |> this.ReturnIQuery
 
         member this.FilterByMinDate(min_date : System.DateTime) = 
-            min_date |> this.Pricerecords.GetByMinDate
+            this.Pricerecords.Where<PriceRecordItem>((fun (x : PriceRecordItem) -> x.Date >= min_date))
+            |> this.ReturnIQuery
 
         member this.FilterByMaxQuantity(max_qtd : int) = 
-            max_qtd |> this.Pricerecords.GetByMaxQuantity
+            this.Pricerecords.Where<PriceRecordItem>(fun x -> x.Quantity <= max_qtd)
+            |> this.ReturnIQuery
 
         member this.FilterByMinQuantity(min_qtd : int) = 
-            min_qtd |> this.Pricerecords.GetByMinQuantity
+            this.Pricerecords.Where<PriceRecordItem>(fun x -> x.Quantity >= min_qtd)
+            |> this.ReturnIQuery
 
         member this.GetByDateRange(min_date : System.DateTime, max_date : System.DateTime) = 
-            (min_date, max_date) |> this.Pricerecords.GetByDateRange
+            this.Pricerecords.Where<PriceRecordItem>(fun (x : PriceRecordItem) -> x.Date >= min_date && x.Date <= max_date)
+            |> this.ReturnIQuery
 
         member this.GetAllPricesInOrderByDate(min_date : System.DateTime, max_date : System.DateTime) = 
             (min_date, max_date) |> this.Pricerecords.GetAllOrderedInRange

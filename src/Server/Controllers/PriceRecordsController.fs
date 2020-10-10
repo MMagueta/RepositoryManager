@@ -45,10 +45,6 @@ module Controller =
     let GetMarketData(min_date, max_date, currency_pair_id, provider_id) = 
         (uow.GetMarketData (min_date |> System.DateTime.Parse, max_date |> System.DateTime.Parse, provider_id, currency_pair_id)) |> match_pattern
 
-    //let WhereProviders = 
-    //    match (uow.WhereProviders((fun (x : ProviderItem) -> x.Id.Equals(id)))) with
-    //    | result -> Some(result.ToList().[0]) |> match_pattern
-
     //----------------------- POST -----------------------
 
     let InsertPriceRecord() = 
