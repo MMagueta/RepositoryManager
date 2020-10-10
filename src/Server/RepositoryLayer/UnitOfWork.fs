@@ -6,6 +6,9 @@ open System.Runtime.Serialization
 open System.Runtime.Serialization.Formatters.Binary
 open System.Runtime.Serialization.Json
 open System.IO
+open System
+open System.Linq
+open System.Linq.Expressions
 
 open Models
 
@@ -17,8 +20,15 @@ module UnitOfWork =
         member this.CRPairs = CurrencyPairsRepository(context)
         member this.Pricerecords = PriceRecordsRepository(context)
 
+        member this.UnpackListSomeOrNone x = match x with | None -> [] | Some(x) -> x
+        member this.ReturnIQuery (x : IQueryable<'T>) = Some(x.ToList().[0])
+
+        //member this.WhereProviders(expression : Expression<Func<'T, bool>>) = 
+        //    this.Providers.Where<ProviderItem>(expression)
+
         member this.GetPriceRecordsByCPairs(cpairs_id : int) = 
-            this.Pricerecords.GetByCPairs(cpairs_id)
+            this.Pricerecords.Where<PriceRecordItem>((fun (x : PriceRecordItem) -> x.CPair.Id.Equals(cpairs_id)))
+            |> this.ReturnIQuery
 
         member this.GetPriceRecordsByProviders(providers_id : int) = 
             this.Pricerecords.GetByProviders(providers_id)
