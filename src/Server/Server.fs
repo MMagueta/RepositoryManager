@@ -40,6 +40,7 @@ module Server =
                 ]
             POST >=>
                 choose [
+                    route "/prices/allrecords/" >=> FilterAllRecords()
                     route "/prices/" >=> InsertPriceRecord()
                     route "/providers/" >=> InsertProvider()
                     route "/currencypairs/" >=> InsertCurrencyPair()

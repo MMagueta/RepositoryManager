@@ -12,6 +12,29 @@ open System.Linq.Expressions
 
 open Models
 
+
+type Filters =
+    {
+
+        mutable minDate : string
+        mutable maxDate : string
+        mutable provider : string
+        mutable pairs : list<int>
+        mutable maxQuantity : string
+        mutable minQuantity : string
+    }
+    member this.tryParse =
+        let tryCast(value, parsingFunc) = match (try Some(value |> parsingFunc) with err -> None) with | Some x -> false | None -> true
+
+        if      (tryCast(this.minDate, System.DateTime.Parse) && this.minDate <> "") then (this.minDate <- ""; None)
+        else if (tryCast(this.maxDate, System.DateTime.Parse) && this.minDate <> "") then (this.maxDate <- System.DateTime.Now.ToString(); None)
+        else if (tryCast(this.provider, int) || this.provider = "") then Some "The Provider ID must be informed."
+        else if not (this.pairs |> List.forall (fun x -> not (tryCast(x, int)))) then Some "Error parsing the Currency Pair ID list."
+        else if (tryCast(this.minQuantity, int) && this.minQuantity <> "") then (this.minQuantity <- ""; None)
+        else if (tryCast(this.maxQuantity, int) && this.maxQuantity <> "") then (this.minQuantity <- ""; None)
+        else None
+
+
 module UnitOfWork = 
     let ctx = ContextFactory.Create("Host=database-3.cnnri9trsf5s.us-east-2.rds.amazonaws.com;Port=5432;Pooling=true;Database=teste_pg;User Id=postgres;Password=159753123")
     type UnitOfWork(contextIn : RepositoryContext) =
@@ -70,9 +93,47 @@ module UnitOfWork =
         member this.GetMarketData(min_date, max_date, currency_pair_id, provider_id) = 
             (min_date, max_date)
             |> this.Pricerecords.GetAllOrderedInRange
-            |> fun data -> match data with | None -> [] | Some(x) -> x
+            |> this.UnpackListSomeOrNone
             |> List.map (fun (key, values) -> (key, values |> List.filter (fun data -> data.CPair.Id = currency_pair_id && data.Provider.Id = provider_id )))
             |> fun x -> match x with | [] -> None | _ -> Some(x) 
+
+        member this.FilterRecords(filters : Filters) =
+            let minDate = if filters.minDate <> "" then 
+                            filters.minDate
+                            |> System.DateTime.Parse
+                            |> this.FilterByMinDate
+                            |> this.UnpackListSomeOrNone 
+                          else []
+            let maxDate = if filters.maxDate <> "" then 
+                            filters.maxDate
+                            |> System.DateTime.Parse
+                            |> this.FilterByMaxDate
+                            |> this.UnpackListSomeOrNone 
+                          else []
+            let maxQuantity = if filters.maxQuantity <> "" then 
+                                filters.maxQuantity
+                                |> int
+                                |> this.FilterByMaxQuantity
+                                |> this.UnpackListSomeOrNone 
+                              else []
+            let minQuantity = if filters.minQuantity <> "" then 
+                                filters.minQuantity
+                                |> int
+                                |> this.FilterByMinQuantity
+                                |> this.UnpackListSomeOrNone 
+                              else []
+            let pairs = if filters.pairs <> [] then 
+                            this.Pricerecords.All<PriceRecordItem>()
+                            |> List.ofArray
+                            |> List.groupBy (fun (elem : PriceRecordItem) -> elem.CPair.Id)
+                            |> List.filter (fun (key, value) -> List.contains key filters.pairs)
+                            |> List.map (fun (key, value) -> value)
+                            |> List.reduce List.append
+                        else []
+            let provider = this.GetPriceRecordsByProviders(filters.provider |> int) |> this.UnpackListSomeOrNone 
+
+            (((((pairs @ provider) |> List.distinct) @ minDate |> List.distinct ) @ maxDate |> List.distinct) @ maxQuantity |> List.distinct) @minQuantity |> List.distinct |> this.PackListSomeOrNone
+
 
         member this.InsertPriceRecord(new_registry : PriceRecordItem) = 
             let aggregateAndRegister(new_registry : PriceRecordItem) = // Handle the swap of aggregate input and insert

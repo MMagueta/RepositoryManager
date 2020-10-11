@@ -2,6 +2,9 @@ namespace PriceRecords
 
 open Saturn
 open Microsoft.AspNetCore.Http
+open System.IO
+open System.Text
+open Newtonsoft.Json
 open FSharp.Control.Tasks.ContextInsensitive
 open FSharp.Collections
 open Giraffe
@@ -44,6 +47,33 @@ module Controller =
 
     let GetMarketData(min_date, max_date, currency_pair_id, provider_id) = 
         (uow.GetMarketData (min_date |> System.DateTime.Parse, max_date |> System.DateTime.Parse, provider_id, currency_pair_id)) |> MatchPattern
+
+    let FilterAllRecords() = 
+    (*fun (next : HttpFunc) (ctx : HttpContext) ->
+        task {
+            let! filters = ctx.BindJsonAsync<Filters>()
+            return! (
+                match uow.FilterRecords(filters) with 
+                | None -> RequestErrors.BAD_REQUEST "No records found."
+                | Some result -> Successful.OK result
+            ) next ctx
+        } *)
+
+        fun (next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let! filters = ctx.BindJsonAsync<Filters>()
+
+                let filterProcedure(registry) =
+                    match uow.FilterRecords(filters) with 
+                    | None -> RequestErrors.BAD_REQUEST "No records found."
+                    | Some result -> Successful.OK result
+                return! (
+                    match filters.tryParse with 
+                    | Some msg -> RequestErrors.BAD_REQUEST msg
+                    | None -> filterProcedure(filters)
+                ) next ctx
+            }
+
 
     //----------------------- POST -----------------------
 
