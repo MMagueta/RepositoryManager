@@ -86,10 +86,28 @@ module Controller =
                     | Some msg -> RequestErrors.BAD_REQUEST msg
                     | None -> Successful.OK registry
                 return! (
-                    match new_price_record.Errors() with 
+                    match new_price_record.Errors(false) with 
                     | Some msg -> RequestErrors.BAD_REQUEST msg
                     | None -> insertionProcedure(new_price_record)
                 ) next ctx
             }
 
+    //----------------------- PUT -----------------------
 
+    let UpdatePriceRecord() = 
+        fun (next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let! updated_price_record = ctx.BindJsonAsync<PriceRecordItem>()
+                if not( isNull (box (uow.Pricerecords.GetById<PriceRecordItem>(updated_price_record.Id)))) then
+                    let updateProcedure(registry) =
+                        match uow.UpdatePriceRecord(registry) with
+                        | Some msg -> RequestErrors.BAD_REQUEST msg
+                        | _ -> Successful.OK "Record updated." 
+                    return! (
+                        match updated_price_record.Errors(true) with 
+                        | Some msg -> RequestErrors.BAD_REQUEST msg
+                        | None -> updateProcedure(updated_price_record)
+                    ) next ctx
+                else
+                    return! RequestErrors.BAD_REQUEST "Old record not found." next ctx
+            }

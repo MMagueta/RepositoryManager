@@ -147,6 +147,22 @@ module UnitOfWork =
             | (_, null) -> Some("Currency Pair not found.")
             | (_ , _) -> aggregateAndRegister(new_registry)
 
+        member this.UpdatePriceRecord(update_registry : PriceRecordItem) =
+            try 
+                let record = this.Pricerecords.GetById<PriceRecordItem>(update_registry.Id)
+                record.CPair <-  this.CRPairs.GetById<CurrencyPairItem>(update_registry.CPair.Id)
+                record.Date <- update_registry.Date
+                record.Price <- update_registry.Price
+                record.Provider <- this.Providers.GetById<ProviderItem>(update_registry.Provider.Id)
+                record.Quantity <- update_registry.Quantity
+                record.SubProvider <- update_registry.SubProvider
+                this.Complete()
+                None
+            with
+                err -> Some err
+           
+            
+
         member this.InsertProvider(new_registry : ProviderItem) = 
             this.Providers.Insert(new_registry) |> ignore //Insert into the context
             this.Complete() |> ignore //Calls the context to save the changes

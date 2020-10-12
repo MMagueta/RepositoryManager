@@ -46,6 +46,13 @@ module Server =
                     route "/currencypairs/" >=> InsertCurrencyPair()
 
                 ]
+            PUT >=>
+                choose [
+                    route "/prices/" >=> UpdatePriceRecord()
+                    // route "/providers/" >=> UpdateProvider()
+                    // route "/currencypairs/" >=> UpdateCurrencyPair()
+
+                ]
             setStatusCode 404 >=> text "Not Found" ]
     
     
