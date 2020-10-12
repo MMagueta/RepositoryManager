@@ -75,45 +75,98 @@ module Server =
 
     let exitCode = 0
 
-    let init(context : RepositoryContext) = 
+    let Seed(context : RepositoryContext) = 
         context.Database.EnsureDeleted() |> ignore
         context.Database.EnsureCreated() |> ignore
         
-        let tdItems : ProviderItem[] = 
+        let records : ProviderItem[] = 
             [|
                 { Id = 0; Name = "A" }
                 { Id = 0; Name = "B" }
                 { Id = 0; Name = "C" }
             |]
 
-        context.Providers.AddRange(tdItems) |> ignore
-        let tdItems : CurrencyPairItem[] = 
+        context.Providers.AddRange(records) |> ignore
+        let records : CurrencyPairItem[] = 
             [|
-                { Id = 0; Label = "A/B" }
-                { Id = 0; Label = "Z/H" }
+                { Id = 0; Label = "USD/BRL" }
+                { Id = 0; Label = "EUR/JPY" }
             |]
 
-        context.CPairs.AddRange(tdItems) |> ignore
+        context.CPairs.AddRange(records) |> ignore
         context.SaveChanges() |> ignore 
         let prov = ProvidersRepository(context)
         let pairs = CurrencyPairsRepository(context)
-        let d1 = System.DateTime.Parse "1-1-2011"
-        let d2 = System.DateTime.Parse "1-2-2011"
-        let d3 = System.DateTime.Parse "3-2-2011"
-        let d4 = System.DateTime.Parse "1-3-2011"
-        let tdItems : PriceRecordItem[] = 
+
+        let records : PriceRecordItem[] = 
             [|
-                { Id = 0; Date = d2; Price = 1.4213; Quantity = 1238; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
-                { Id = 0; Date = d1; Price = 1.5213; Quantity = 1238; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
-                { Id = 0; Date = d4; Price = 1.6213; Quantity = 1238; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
-                { Id = 0; Date = d3; Price = 0.9536; Quantity = 1238; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(1.0); Price = 1.4213; Quantity = 1238; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(2.0); Price = 1.5213; Quantity = 1235; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(3.0); Price = 1.6213; Quantity = 2324; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(4.0); Price = 1.4213; Quantity = 1235; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(5.0); Price = 1.5213; Quantity = 5321; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(6.0); Price = 1.6213; Quantity = 1235; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(7.0); Price = 1.4213; Quantity = 4535; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(8.0); Price = 1.5213; Quantity = 2354; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(9.0); Price = 1.6213; Quantity = 412; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "vwap" }
+
+                { Id = 0; Date = System.DateTime.Now.AddDays(1.0); Price = 1.6433; Quantity = 1238; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(2.0); Price = 2.4324; Quantity = 1235; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(3.0); Price = 2.2222; Quantity = 2324; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(4.0); Price = 2.5676; Quantity = 1235; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(5.0); Price = 2.4321; Quantity = 5321; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(6.0); Price = 2.1532; Quantity = 1235; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(7.0); Price = 2.2134; Quantity = 4535; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(8.0); Price = 2.1234; Quantity = 2354; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(9.0); Price = 2.6421; Quantity = 412; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "feed" }
+
+                { Id = 0; Date = System.DateTime.Now.AddDays(1.0); Price = 3.1235; Quantity = 1235; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(2.0); Price = 0.9545; Quantity = 8454; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(3.0); Price = 1.2345; Quantity = 2324; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(4.0); Price = 1.3246; Quantity = 1235; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(5.0); Price = 1.5213; Quantity = 5321; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(6.0); Price = 1.654; Quantity = 1235; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(7.0); Price = 1.5466; Quantity = 4535; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(8.0); Price = 1.2434; Quantity = 2354; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(9.0); Price = 4.2345; Quantity = 412; Provider = prov.GetById<ProviderItem>(1); CPair = pairs.GetById<CurrencyPairItem>(1); SubProvider = "overall" }
+
+
+                { Id = 0; Date = System.DateTime.Now.AddDays(1.0); Price = 1.4213; Quantity = 1238; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(2.0); Price = 1.5213; Quantity = 1235; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(3.0); Price = 1.6213; Quantity = 2324; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(4.0); Price = 1.4213; Quantity = 1235; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(5.0); Price = 1.5213; Quantity = 5321; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(6.0); Price = 1.6213; Quantity = 1235; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(7.0); Price = 1.4213; Quantity = 4535; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(8.0); Price = 1.5213; Quantity = 2354; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "vwap" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(9.0); Price = 1.6213; Quantity = 412; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "vwap" }
+
+                { Id = 0; Date = System.DateTime.Now.AddDays(1.0); Price = 1.6433; Quantity = 1238; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(2.0); Price = 2.4324; Quantity = 1235; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(3.0); Price = 2.2222; Quantity = 2324; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(4.0); Price = 2.5676; Quantity = 1235; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(5.0); Price = 2.4321; Quantity = 5321; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(6.0); Price = 2.1532; Quantity = 1235; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(7.0); Price = 2.2134; Quantity = 4535; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(8.0); Price = 2.1234; Quantity = 2354; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "feed" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(9.0); Price = 2.6421; Quantity = 412; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "feed" }
+
+                { Id = 0; Date = System.DateTime.Now.AddDays(1.0); Price = 3.1235; Quantity = 1235; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(2.0); Price = 0.9545; Quantity = 8454; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(3.0); Price = 1.2345; Quantity = 2324; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(4.0); Price = 1.3246; Quantity = 1235; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(5.0); Price = 1.5213; Quantity = 5321; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(6.0); Price = 1.654; Quantity = 1235; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(7.0); Price = 1.5466; Quantity = 4535; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(8.0); Price = 1.2434; Quantity = 2354; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "overall" }
+                { Id = 0; Date = System.DateTime.Now.AddDays(9.0); Price = 4.2345; Quantity = 412; Provider = prov.GetById<ProviderItem>(2); CPair = pairs.GetById<CurrencyPairItem>(2); SubProvider = "overall" }
             |]
 
-        context.PriceRecords.AddRange(tdItems) |> ignore
+        context.PriceRecords.AddRange(records) |> ignore
         context.SaveChanges() |> ignore 
 
     [<EntryPoint>]
     let main args =
-        init(ctx)
+        Seed(ctx)
         run app
         exitCode
