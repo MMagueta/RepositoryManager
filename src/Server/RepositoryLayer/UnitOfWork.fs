@@ -161,13 +161,20 @@ module UnitOfWork =
             with
                 err -> Some err
            
-            
-
         member this.InsertProvider(new_registry : ProviderItem) = 
             this.Providers.Insert(new_registry) |> ignore //Insert into the context
             this.Complete() |> ignore //Calls the context to save the changes
             None // None for matching the return
             //TODO add validation for the complete and insert function returns
+
+        member this.UpdateProvider(update_registry : ProviderItem) =
+            try 
+                let record = this.Pricerecords.GetById<ProviderItem>(update_registry.Id)
+                record.Name <- update_registry.Name
+                this.Complete()
+                None
+            with
+                err -> Some err
 
         member this.InsertCurrencyPair(new_registry : CurrencyPairItem) = 
             this.CRPairs.Insert(new_registry) |> ignore //Insert into the context

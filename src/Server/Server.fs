@@ -49,7 +49,7 @@ module Server =
             PUT >=>
                 choose [
                     route "/prices/" >=> UpdatePriceRecord()
-                    // route "/providers/" >=> UpdateProvider()
+                    route "/providers/" >=> UpdateProvider()
                     // route "/currencypairs/" >=> UpdateCurrencyPair()
 
                 ]

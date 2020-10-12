@@ -26,8 +26,26 @@ module Controller =
                     | Some msg -> RequestErrors.BAD_REQUEST msg
                     | None -> Successful.OK registry
                 return! (
-                    match new_provider.Errors() with 
+                    match new_provider.Errors(false) with 
                     | Some msg -> RequestErrors.BAD_REQUEST msg
                     | None -> insertionProcedure(new_provider)
                 ) next ctx
+            }
+    //----------------------- PUT -----------------------
+    let UpdateProvider() = 
+        fun (next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let! updated_provider = ctx.BindJsonAsync<ProviderItem>()
+                if not( isNull (box (uow.Providers.GetById<ProviderItem>(updated_provider.Id)))) then
+                    let updateProcedure(registry) =
+                        match uow.UpdateProvider(registry) with
+                        | Some msg -> RequestErrors.BAD_REQUEST msg
+                        | _ -> Successful.OK "Record updated." 
+                    return! (
+                        match updated_provider.Errors(true) with 
+                        | Some msg -> RequestErrors.BAD_REQUEST msg
+                        | None -> updateProcedure(updated_provider)
+                    ) next ctx
+                else
+                    return! RequestErrors.BAD_REQUEST "Old record not found." next ctx
             }
