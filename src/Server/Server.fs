@@ -56,7 +56,7 @@ module Server =
             DELETE >=>
                 choose [
                     routef "/prices/%i" DeletePriceRecord
-                    //routef "/providers/%i" DeleteProvider
+                    routef "/providers/%i" DeleteProvider
                     //routef "/currencypairs/%i" DeleteCurrencyPair
 
                 ]

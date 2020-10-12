@@ -49,3 +49,23 @@ module Controller =
                 else
                     return! RequestErrors.BAD_REQUEST "Old record not found." next ctx
             }
+
+    //----------------------- DELETE -----------------------
+
+    let DeleteProvider(id : int) = 
+        fun (next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let result =
+                    try 
+                        let provider = uow.Providers.GetById<ProviderItem>(id)
+                        match uow.GetPriceRecordsByProviders(provider.Id) with
+                        | Some price_records-> price_records |> List.iter (fun x -> uow.Pricerecords.Remove<PriceRecordItem>(x) |> ignore)
+                        uow.Providers.Remove<ProviderItem>(provider) |> ignore
+                        uow.Complete()
+                        None
+                    with 
+                        err -> Some("Error on deleting records.")
+                match result with 
+                | Some msg -> return! RequestErrors.BAD_REQUEST msg next ctx
+                | None -> return! Successful.OK "Record deleted in cascade." next ctx
+            }
