@@ -49,3 +49,24 @@ module Controller =
                 else
                     return! RequestErrors.BAD_REQUEST "Old record not found." next ctx
             }
+
+    //----------------------- DELETE -----------------------
+
+    let DeleteCurrencyPair(id : int) = 
+        fun (next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let result =
+                    try 
+                        let crpair = uow.CRPairs.GetById<CurrencyPairItem>(id)
+                        match uow.GetPriceRecordsByCPairs(crpair.Id) with
+                        | Some price_records-> price_records |> List.iter (fun x -> uow.Pricerecords.Remove<PriceRecordItem>(x) |> ignore)
+                        | None -> "" |> ignore //Must verify the condition, but has no use in this case
+                        uow.CRPairs.Remove<CurrencyPairItem>(crpair) |> ignore
+                        uow.Complete()
+                        None
+                    with 
+                        err -> Some("Error on deleting records.")
+                match result with 
+                | Some msg -> return! RequestErrors.BAD_REQUEST msg next ctx
+                | None -> return! Successful.OK "Record deleted in cascade." next ctx
+            }

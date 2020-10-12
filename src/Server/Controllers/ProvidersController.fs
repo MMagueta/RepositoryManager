@@ -60,6 +60,7 @@ module Controller =
                         let provider = uow.Providers.GetById<ProviderItem>(id)
                         match uow.GetPriceRecordsByProviders(provider.Id) with
                         | Some price_records-> price_records |> List.iter (fun x -> uow.Pricerecords.Remove<PriceRecordItem>(x) |> ignore)
+                        | None -> "" |> ignore //Must verify the condition, but has no use in this case
                         uow.Providers.Remove<ProviderItem>(provider) |> ignore
                         uow.Complete()
                         None

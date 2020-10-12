@@ -57,7 +57,7 @@ module Server =
                 choose [
                     routef "/prices/%i" DeletePriceRecord
                     routef "/providers/%i" DeleteProvider
-                    //routef "/currencypairs/%i" DeleteCurrencyPair
+                    routef "/currencypairs/%i" DeleteCurrencyPair
 
                 ]
             setStatusCode 404 >=> text "Not Found" ]
