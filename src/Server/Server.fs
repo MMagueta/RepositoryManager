@@ -53,6 +53,13 @@ module Server =
                     route "/currencypairs/" >=> UpdateCurrencyPair()
 
                 ]
+            DELETE >=>
+                choose [
+                    routef "/prices/%i" DeletePriceRecord
+                    //routef "/providers/%i" DeleteProvider
+                    //routef "/currencypairs/%i" DeleteCurrencyPair
+
+                ]
             setStatusCode 404 >=> text "Not Found" ]
     
     

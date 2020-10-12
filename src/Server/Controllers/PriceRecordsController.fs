@@ -111,3 +111,20 @@ module Controller =
                 else
                     return! RequestErrors.BAD_REQUEST "Old record not found." next ctx
             }
+
+    //----------------------- DELETE -----------------------
+
+    let DeletePriceRecord(id : int) = 
+        fun (next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let result =
+                    try 
+                        uow.Pricerecords.Remove<PriceRecordItem>(uow.Pricerecords.GetById<PriceRecordItem>(id)) |> ignore
+                        uow.Complete()
+                        None
+                    with 
+                        err -> Some("Error on deleting record.")
+                match result with 
+                | Some msg -> return! RequestErrors.BAD_REQUEST msg next ctx
+                | None -> return! Successful.OK "Record deleted." next ctx
+            }
