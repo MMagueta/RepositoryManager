@@ -50,7 +50,7 @@ module Server =
                 choose [
                     route "/prices/" >=> UpdatePriceRecord()
                     route "/providers/" >=> UpdateProvider()
-                    // route "/currencypairs/" >=> UpdateCurrencyPair()
+                    route "/currencypairs/" >=> UpdateCurrencyPair()
 
                 ]
             setStatusCode 404 >=> text "Not Found" ]

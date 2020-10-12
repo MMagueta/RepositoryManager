@@ -7,10 +7,10 @@ type CurrencyPairItem =
     {
         Id : int
         [<Required>]
-        Label : string
+        mutable Label : string
 
     }
 
-    member this.Errors() =
-        if this.Id <> 0 then Some "ID must be zero to be registred"
+    member this.Errors(update : bool) =
+        if this.Id <> 0 && not update then Some "ID must be zero to be registred"
         else None

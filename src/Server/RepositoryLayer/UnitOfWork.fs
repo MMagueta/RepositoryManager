@@ -182,6 +182,15 @@ module UnitOfWork =
             None // None for matching the return
             //TODO add validation for the complete and insert function returns
 
+        member this.UpdateCurrencyPair(update_registry : CurrencyPairItem) =
+            try 
+                let record = this.CRPairs.GetById<CurrencyPairItem>(update_registry.Id)
+                record.Label <- update_registry.Label
+                this.Complete()
+                None
+            with
+                err -> Some err
+
         member this.Complete() =
             context.SaveChanges() |> ignore
         member this.Dispose =

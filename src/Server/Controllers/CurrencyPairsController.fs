@@ -26,8 +26,26 @@ module Controller =
                     | Some msg -> RequestErrors.BAD_REQUEST msg
                     | None -> Successful.OK registry
                 return! (
-                    match new_cpair.Errors() with 
+                    match new_cpair.Errors(false) with 
                     | Some msg -> RequestErrors.BAD_REQUEST msg
                     | None -> insertionProcedure(new_cpair)
                 ) next ctx
+            }
+    //----------------------- PUT -----------------------
+    let UpdateCurrencyPair() = 
+        fun (next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let! updated_cpair = ctx.BindJsonAsync<CurrencyPairItem>()
+                if not( isNull (box (uow.Providers.GetById<CurrencyPairItem>(updated_cpair.Id)))) then
+                    let updateProcedure(registry) =
+                        match uow.UpdateCurrencyPair(registry) with
+                        | Some msg -> RequestErrors.BAD_REQUEST msg
+                        | _ -> Successful.OK "Record updated." 
+                    return! (
+                        match updated_cpair.Errors(true) with 
+                        | Some msg -> RequestErrors.BAD_REQUEST msg
+                        | None -> updateProcedure(updated_cpair)
+                    ) next ctx
+                else
+                    return! RequestErrors.BAD_REQUEST "Old record not found." next ctx
             }
