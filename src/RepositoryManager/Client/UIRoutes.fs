@@ -9,10 +9,9 @@ open Startup
 open Zanaptak.TypedCssClasses
 open XPlot.Plotly
 
-open Fulma
-
 Seed(ctx)
 
+//Instance to make access to the style easier
 type Bulma = CssClasses<"https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.1/css/bulma.min.css">
 
 let createPage title subtitle content = 
@@ -35,7 +34,7 @@ let createPage title subtitle content =
         ]
     ]
 
-
+//Creates a plot with the data gathered by the id of the provider and currency pair, a line for each category from a provider
 let pricesPlotView(provider_id : int, cpair_id : int) = 
     
     createPage "Market Data" ("Provider: " + uow.Providers.GetById<ProviderItem>(provider_id).Name + " Currency: " + uow.CRPairs.GetById<CurrencyPairItem>(cpair_id).Label) [
@@ -62,10 +61,11 @@ let pricesPlotView(provider_id : int, cpair_id : int) =
             ]
     ]
 
+//Creates a table with the data gathered by the id of the provider and currency pair
 let pricesTableView(provider_id : int, cpair_id : int) = 
     createPage "Market Data" ("Provider: " + uow.Providers.GetById<ProviderItem>(provider_id).Name + " Currency: " + uow.CRPairs.GetById<CurrencyPairItem>(cpair_id).Label) [
         a [  _href ("http://localhost:8085/data/plot/" + provider_id.ToString() + "/" + cpair_id.ToString())] [
-            button [ _class "button is-link columns is-mobile is-centered"; _style "margin-left: 50%"] [ Text "Table"]
+            button [ _class "button is-link columns is-mobile is-centered"; _style "margin-left: 50%"] [ Text "Plot"]
         ]
         table [ _style "margin-top: 5%"; _class "table is-mobile is-centered is-fullwidth is-hoverable is-hoverable" ] [
             thead [] [

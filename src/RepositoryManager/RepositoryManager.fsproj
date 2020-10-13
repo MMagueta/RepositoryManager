@@ -4,13 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Database.fs" />
     <Compile Include="Config.fs" />
-
-    <Compile Include="Templates\App.fs" />
-    <Compile Include="Templates\Index.fs" />
-    <Compile Include="Templates\NotFound.fs" />
-    <Compile Include="Templates\InternalError.fs" />
 
     <Compile Include="Models\CurrencyPair.fs" />
     <Compile Include="Models\Provider.fs" />
@@ -35,16 +29,9 @@
     <Compile Include="Router.fs" />
     <Compile Include="Program.fs" />
 
-    <Content Include="static\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="*.sqlite">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Elmish" Version="3.1.0" />
-    <PackageReference Include="Fulma" Version="2.10.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0-rc.1.20451.13" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0-rc1" />

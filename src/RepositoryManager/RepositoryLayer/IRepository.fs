@@ -3,7 +3,6 @@ namespace Repository
 open System
 open System.Linq
 open System.Linq.Expressions
-open Microsoft.EntityFrameworkCore
 
 type IRepository<'T> = 
     abstract All : unit -> 'T []

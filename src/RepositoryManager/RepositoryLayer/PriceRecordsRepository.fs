@@ -3,7 +3,6 @@ namespace Repository
 open System
 open Microsoft.EntityFrameworkCore
 
-open Context
 open Models
 
 type PriceRecordsRepository(contextIn : DbContext) = 

@@ -1,12 +1,8 @@
 namespace Providers
 
-open Saturn
 open Microsoft.AspNetCore.Http
-open FSharp.Control.Tasks.ContextInsensitive
 open Giraffe
 open FSharp.Control.Tasks.V2.ContextInsensitive
-open Repository
-open Context
 open Models
 open Repository.UnitOfWork
 

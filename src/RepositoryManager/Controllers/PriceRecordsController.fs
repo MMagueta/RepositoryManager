@@ -1,13 +1,9 @@
 namespace PriceRecords
 
-open Saturn
 open Microsoft.AspNetCore.Http
-open Newtonsoft.Json
-open FSharp.Control.Tasks.ContextInsensitive
 open Giraffe
 open FSharp.Control.Tasks.V2.ContextInsensitive
 open Repository
-open Context
 open Models
 open Repository.UnitOfWork
 
@@ -17,44 +13,34 @@ module Controller =
         | Some(record) -> record |> json
         | None -> setStatusCode 404 >=> text "Records not found"
 
-    let FindPriceRecordsByCPairs(cpairs_id) =
+    let FindPriceRecordsByCPairs(cpairs_id : int) =
         cpairs_id |> uow.GetPriceRecordsByCPairs |> MatchPattern
 
-    let GetPriceRecordsByProviders(providers_id) =
+    let GetPriceRecordsByProviders(providers_id : int) =
         providers_id |> uow.GetPriceRecordsByProviders |> MatchPattern
 
-    let GetByDateRange(min_date, max_date) = 
+    let GetByDateRange(min_date : string, max_date : string) = 
         (uow.GetByDateRange (min_date |> System.DateTime.Parse, max_date |> System.DateTime.Parse)) |> MatchPattern
 
-    let FilterByMinDate(min_date) = 
+    let FilterByMinDate(min_date : string) = 
         min_date |> System.DateTime.Parse |> uow.FilterByMinDate |> MatchPattern
 
-    let FilterByMaxQuantity(max_qtd) = 
+    let FilterByMaxQuantity(max_qtd : int) = 
         max_qtd |> uow.FilterByMaxQuantity |> MatchPattern
 
-    let FilterByMinQuantity(min_qtd) = 
+    let FilterByMinQuantity(min_qtd : int) = 
         min_qtd |> uow.FilterByMinQuantity |> MatchPattern
 
-    let FilterByMaxDate(max_date) = 
+    let FilterByMaxDate(max_date : string) = 
         max_date |> System.DateTime.Parse |> uow.FilterByMaxDate |> MatchPattern
 
-    let GetAllPricesInOrderByDate(min_date, max_date) = 
+    let GetAllPricesInOrderByDate(min_date : string, max_date : string) = 
         (uow.GetAllPricesInOrderByDate (min_date |> System.DateTime.Parse, max_date |> System.DateTime.Parse)) |> MatchPattern
 
-    let GetMarketData(min_date, max_date, currency_pair_id, provider_id) = 
+    let GetMarketData(min_date : string, max_date : string, currency_pair_id : int, provider_id :int) = 
         (uow.GetMarketData (min_date |> System.DateTime.Parse, max_date |> System.DateTime.Parse, provider_id, currency_pair_id)) |> MatchPattern
 
     let FilterAllRecords() = 
-    (*fun (next : HttpFunc) (ctx : HttpContext) ->
-        task {
-            let! filters = ctx.BindJsonAsync<Filters>()
-            return! (
-                match uow.FilterRecords(filters) with 
-                | None -> RequestErrors.BAD_REQUEST "No records found."
-                | Some result -> Successful.OK result
-            ) next ctx
-        } *)
-
         fun (next : HttpFunc) (ctx : HttpContext) ->
             task {
                 let! filters = ctx.BindJsonAsync<Filters>()

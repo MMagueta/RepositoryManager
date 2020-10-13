@@ -2,7 +2,6 @@ namespace Repository
 
 open Microsoft.EntityFrameworkCore
 
-open Context
 open Models
 
 type CurrencyPairsRepository(contextIn : DbContext) = 
