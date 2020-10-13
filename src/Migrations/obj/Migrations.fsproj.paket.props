@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+        <PaketPropsVersion>5.185.3</PaketPropsVersion>
+        <PaketPropsLoaded>true</PaketPropsLoaded>
+    </PropertyGroup>
+
+    <ItemGroup Condition="($(DesignTimeBuild) == true) AND (('$(TargetFramework)' == 'netcoreapp3.1') OR ('$(TargetFramework)' == 'netcoreapp31'))">
+        <PackageReference Include="FSharp.Core">
+            <Version>4.7.2</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.NETCore.Platforms">
+            <Version>3.1.1</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.NETCore.Targets">
+            <Version>3.1</Version>
+        </PackageReference>
+        <PackageReference Include="NETStandard.Library">
+            <Version>2.0.3</Version>
+        </PackageReference>
+        <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3">
+            <Version>2.0.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.Memory">
+            <Version>4.5.4</Version>
+        </PackageReference>
+        <PackageReference Include="SQLitePCLRaw.core">
+            <Version>2.0.3</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Data.Sqlite.Core">
+            <Version>3.1.5</Version>
+        </PackageReference>
+        <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl">
+            <Version>2.0.3</Version>
+        </PackageReference>
+        <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3">
+            <Version>2.0.3</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Data.Sqlite">
+            <Version>3.1.5</Version>
+        </PackageReference>
+        <PackageReference Include="System.Runtime">
+            <Version>4.3.1</Version>
+        </PackageReference>
+        <PackageReference Include="System.Collections">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.Diagnostics.Debug">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.Globalization">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.Reflection.Primitives">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.Runtime.Extensions">
+            <Version>4.3.1</Version>
+        </PackageReference>
+        <PackageReference Include="System.Text.Encoding">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.Text.RegularExpressions">
+            <Version>4.3.1</Version>
+        </PackageReference>
+        <PackageReference Include="System.Threading.Tasks">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.IO">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.Console">
+            <Version>4.3.1</Version>
+        </PackageReference>
+        <PackageReference Include="System.Reflection">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.Reflection.Extensions">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.Resources.ResourceManager">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.Data.Common">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="System.Linq">
+            <Version>4.3</Version>
+        </PackageReference>
+        <PackageReference Include="Simple.Migrations">
+            <Version>0.9.20</Version>
+        </PackageReference>
+    </ItemGroup>
+</Project>

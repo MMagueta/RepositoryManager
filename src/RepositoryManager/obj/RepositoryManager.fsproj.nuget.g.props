@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
+    <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
+    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\mague\.nuget\packages\;C:\Program Files\dotnet\sdk\NuGetFallbackFolder</NuGetPackageFolders>
+    <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">5.7.0</NuGetToolVersion>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <SourceRoot Include="$([MSBuild]::EnsureTrailingSlash($(NuGetPackageFolders)))" />
+  </ItemGroup>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgSystem_ValueTuple Condition=" '$(PkgSystem_ValueTuple)' == '' ">C:\Users\mague\.nuget\packages\system.valuetuple\4.5.0</PkgSystem_ValueTuple>
+    <PkgSystem_Threading_Tasks_Extensions Condition=" '$(PkgSystem_Threading_Tasks_Extensions)' == '' ">C:\Users\mague\.nuget\packages\system.threading.tasks.extensions\4.5.4</PkgSystem_Threading_Tasks_Extensions>
+    <PkgSystem_Reflection_Emit_Lightweight Condition=" '$(PkgSystem_Reflection_Emit_Lightweight)' == '' ">C:\Users\mague\.nuget\packages\system.reflection.emit.lightweight\4.7.0</PkgSystem_Reflection_Emit_Lightweight>
+    <PkgSystem_Reflection_Emit Condition=" '$(PkgSystem_Reflection_Emit)' == '' ">C:\Users\mague\.nuget\packages\system.reflection.emit\4.7.0</PkgSystem_Reflection_Emit>
+    <PkgUtf8Json Condition=" '$(PkgUtf8Json)' == '' ">C:\Users\mague\.nuget\packages\utf8json\1.3.7</PkgUtf8Json>
+    <PkgNewtonsoft_Json Condition=" '$(PkgNewtonsoft_Json)' == '' ">C:\Users\mague\.nuget\packages\newtonsoft.json\12.0.3</PkgNewtonsoft_Json>
+    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\mague\.nuget\packages\fsharp.core\4.7.2</PkgFSharp_Core>
+    <PkgMicrosoft_NETCore_Platforms Condition=" '$(PkgMicrosoft_NETCore_Platforms)' == '' ">C:\Users\mague\.nuget\packages\microsoft.netcore.platforms\3.1.1</PkgMicrosoft_NETCore_Platforms>
+    <PkgSystem_Security_Cryptography_Cng Condition=" '$(PkgSystem_Security_Cryptography_Cng)' == '' ">C:\Users\mague\.nuget\packages\system.security.cryptography.cng\4.7.0</PkgSystem_Security_Cryptography_Cng>
+    <PkgTaskBuilder_fs Condition=" '$(PkgTaskBuilder_fs)' == '' ">C:\Users\mague\.nuget\packages\taskbuilder.fs\2.1.0</PkgTaskBuilder_fs>
+    <PkgMicrosoft_IO_RecyclableMemoryStream Condition=" '$(PkgMicrosoft_IO_RecyclableMemoryStream)' == '' ">C:\Users\mague\.nuget\packages\microsoft.io.recyclablememorystream\1.3.4</PkgMicrosoft_IO_RecyclableMemoryStream>
+    <PkgGiraffe Condition=" '$(PkgGiraffe)' == '' ">C:\Users\mague\.nuget\packages\giraffe\4.1.0</PkgGiraffe>
+    <PkgThoth_Json_Giraffe Condition=" '$(PkgThoth_Json_Giraffe)' == '' ">C:\Users\mague\.nuget\packages\thoth.json.giraffe\4.0.0</PkgThoth_Json_Giraffe>
+    <PkgSystem_Threading_Tasks_Dataflow Condition=" '$(PkgSystem_Threading_Tasks_Dataflow)' == '' ">C:\Users\mague\.nuget\packages\system.threading.tasks.dataflow\4.11.1</PkgSystem_Threading_Tasks_Dataflow>
+    <PkgSystem_Memory Condition=" '$(PkgSystem_Memory)' == '' ">C:\Users\mague\.nuget\packages\system.memory\4.5.4</PkgSystem_Memory>
+    <PkgMicrosoft_IdentityModel_Logging Condition=" '$(PkgMicrosoft_IdentityModel_Logging)' == '' ">C:\Users\mague\.nuget\packages\microsoft.identitymodel.logging\6.6.0</PkgMicrosoft_IdentityModel_Logging>
+    <PkgMicrosoft_CSharp Condition=" '$(PkgMicrosoft_CSharp)' == '' ">C:\Users\mague\.nuget\packages\microsoft.csharp\4.7.0</PkgMicrosoft_CSharp>
+    <PkgMicrosoft_IdentityModel_Tokens Condition=" '$(PkgMicrosoft_IdentityModel_Tokens)' == '' ">C:\Users\mague\.nuget\packages\microsoft.identitymodel.tokens\6.6.0</PkgMicrosoft_IdentityModel_Tokens>
+    <PkgMicrosoft_IdentityModel_JsonWebTokens Condition=" '$(PkgMicrosoft_IdentityModel_JsonWebTokens)' == '' ">C:\Users\mague\.nuget\packages\microsoft.identitymodel.jsonwebtokens\6.6.0</PkgMicrosoft_IdentityModel_JsonWebTokens>
+    <PkgSystem_IdentityModel_Tokens_Jwt Condition=" '$(PkgSystem_IdentityModel_Tokens_Jwt)' == '' ">C:\Users\mague\.nuget\packages\system.identitymodel.tokens.jwt\6.6.0</PkgSystem_IdentityModel_Tokens_Jwt>
+    <PkgSQLitePCLRaw_core Condition=" '$(PkgSQLitePCLRaw_core)' == '' ">C:\Users\mague\.nuget\packages\sqlitepclraw.core\2.0.3</PkgSQLitePCLRaw_core>
+    <PkgSQLitePCLRaw_provider_dynamic_cdecl Condition=" '$(PkgSQLitePCLRaw_provider_dynamic_cdecl)' == '' ">C:\Users\mague\.nuget\packages\sqlitepclraw.provider.dynamic_cdecl\2.0.3</PkgSQLitePCLRaw_provider_dynamic_cdecl>
+    <PkgSQLitePCLRaw_lib_e_sqlite3 Condition=" '$(PkgSQLitePCLRaw_lib_e_sqlite3)' == '' ">C:\Users\mague\.nuget\packages\sqlitepclraw.lib.e_sqlite3\2.0.3</PkgSQLitePCLRaw_lib_e_sqlite3>
+    <PkgSQLitePCLRaw_bundle_e_sqlite3 Condition=" '$(PkgSQLitePCLRaw_bundle_e_sqlite3)' == '' ">C:\Users\mague\.nuget\packages\sqlitepclraw.bundle_e_sqlite3\2.0.3</PkgSQLitePCLRaw_bundle_e_sqlite3>
+    <PkgMicrosoft_IdentityModel_Protocols Condition=" '$(PkgMicrosoft_IdentityModel_Protocols)' == '' ">C:\Users\mague\.nuget\packages\microsoft.identitymodel.protocols\6.6.0</PkgMicrosoft_IdentityModel_Protocols>
+    <PkgMicrosoft_IdentityModel_Protocols_OpenIdConnect Condition=" '$(PkgMicrosoft_IdentityModel_Protocols_OpenIdConnect)' == '' ">C:\Users\mague\.nuget\packages\microsoft.identitymodel.protocols.openidconnect\6.6.0</PkgMicrosoft_IdentityModel_Protocols_OpenIdConnect>
+    <PkgMicrosoft_AspNetCore_Authentication_JwtBearer Condition=" '$(PkgMicrosoft_AspNetCore_Authentication_JwtBearer)' == '' ">C:\Users\mague\.nuget\packages\microsoft.aspnetcore.authentication.jwtbearer\3.1.5</PkgMicrosoft_AspNetCore_Authentication_JwtBearer>
+    <PkgFSharp_Control_Websockets Condition=" '$(PkgFSharp_Control_Websockets)' == '' ">C:\Users\mague\.nuget\packages\fsharp.control.websockets\0.2.2</PkgFSharp_Control_Websockets>
+    <PkgSaturn Condition=" '$(PkgSaturn)' == '' ">C:\Users\mague\.nuget\packages\saturn\0.12.1</PkgSaturn>
+    <PkgMicrosoft_EntityFrameworkCore Condition=" '$(PkgMicrosoft_EntityFrameworkCore)' == '' ">C:\Users\mague\.nuget\packages\microsoft.entityframeworkcore\5.0.0-rc.1.20451.13</PkgMicrosoft_EntityFrameworkCore>
+    <PkgNpgsql_EntityFrameworkCore_PostgreSQL Condition=" '$(PkgNpgsql_EntityFrameworkCore_PostgreSQL)' == '' ">C:\Users\mague\.nuget\packages\npgsql.entityframeworkcore.postgresql\5.0.0-rc1</PkgNpgsql_EntityFrameworkCore_PostgreSQL>
+    <PkgMicrosoft_Data_Sqlite_Core Condition=" '$(PkgMicrosoft_Data_Sqlite_Core)' == '' ">C:\Users\mague\.nuget\packages\microsoft.data.sqlite.core\3.1.5</PkgMicrosoft_Data_Sqlite_Core>
+    <PkgMicrosoft_Data_Sqlite Condition=" '$(PkgMicrosoft_Data_Sqlite)' == '' ">C:\Users\mague\.nuget\packages\microsoft.data.sqlite\3.1.5</PkgMicrosoft_Data_Sqlite>
+    <PkgDapper Condition=" '$(PkgDapper)' == '' ">C:\Users\mague\.nuget\packages\dapper\2.0.35</PkgDapper>
+  </PropertyGroup>
+</Project>
