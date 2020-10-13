@@ -7,9 +7,8 @@ open System.Linq
 open Models
 
 
-type Filters =
+type Filters = //Filter type to match the requests, possibly empty
     {
-
         mutable minDate : string
         mutable maxDate : string
         mutable provider : string
@@ -18,8 +17,10 @@ type Filters =
         mutable minQuantity : string
     }
     member this.tryParse =
+        //Try to cast values and redirects the boolean
         let tryCast(value, parsingFunc) = match (try Some(value |> parsingFunc) with err -> None) with | Some x -> false | None -> true
 
+        //Validation of the input
         if      (tryCast(this.minDate, System.DateTime.Parse) && this.minDate <> "") then (this.minDate <- ""; None)
         else if (tryCast(this.maxDate, System.DateTime.Parse) && this.minDate <> "") then (this.maxDate <- System.DateTime.Now.ToString(); None)
         else if (tryCast(this.provider, int) || this.provider = "") then Some "The Provider ID must be informed."
@@ -30,13 +31,16 @@ type Filters =
 
 
 module UnitOfWork = 
-    let ctx = ContextFactory.Create("Host=database-3.cnnri9trsf5s.us-east-2.rds.amazonaws.com;Port=5432;Pooling=true;Database=teste_pg;User Id=postgres;Password=159753123")
+    //New context from the factory
+    let ctx = ContextFactory.Create(Config.configuration.connectionString)
+
     type UnitOfWork(contextIn : RepositoryContext) =
         let context = contextIn
         member this.Providers = ProvidersRepository(context)
         member this.CRPairs = CurrencyPairsRepository(context)
         member this.Pricerecords = PriceRecordsRepository(context)
 
+        //Auxiliar functions to wrap and unwrap the results
         member this.PackListSomeOrNone x = match x with | [] -> None | _ -> Some(x) 
         member this.UnpackListSomeOrNone x = match x with | None -> [] | Some(x) -> x
         member this.ReturnIQuery (x : IQueryable<'T>) = x.ToArray<'T>() |>  List.ofArray |> this.PackListSomeOrNone
@@ -46,10 +50,38 @@ module UnitOfWork =
         member this.FindCPairById(id : int) = 
             this.CRPairs.GetById<CurrencyPairItem>(id)
 
+        member this.InsertCurrencyPair(new_registry : CurrencyPairItem) = 
+            this.CRPairs.Insert(new_registry) |> ignore //Insert into the context
+            this.Complete() |> ignore //Calls the context to save the changes
+            None // None for matching the return
+
+        member this.UpdateCurrencyPair(update_registry : CurrencyPairItem) =
+            try 
+                let record = this.CRPairs.GetById<CurrencyPairItem>(update_registry.Id)
+                record.Label <- update_registry.Label
+                this.Complete()
+                None
+            with
+                err -> Some err
+
         // PROVIDERS
 
         member this.FindProviderById(id : int) = 
             this.Providers.GetById<ProviderItem>(id)
+
+        member this.InsertProvider(new_registry : ProviderItem) = 
+            this.Providers.Insert(new_registry) |> ignore //Insert into the context
+            this.Complete() |> ignore //Calls the context to save the changes
+            None // None for matching the return
+
+        member this.UpdateProvider(update_registry : ProviderItem) =
+            try 
+                let record = this.Pricerecords.GetById<ProviderItem>(update_registry.Id)
+                record.Name <- update_registry.Name
+                this.Complete()
+                None
+            with
+                err -> Some err
 
         // PRICE RECORDS
 
@@ -84,13 +116,15 @@ module UnitOfWork =
         member this.GetAllPricesInOrderByDate(min_date : System.DateTime, max_date : System.DateTime) = 
             (min_date, max_date) |> this.Pricerecords.GetAllOrderedInRange
 
-        member this.GetMarketData(min_date, max_date, currency_pair_id, provider_id) = 
+        member this.GetMarketData(min_date : System.DateTime, max_date : System.DateTime, currency_pair_id : int, provider_id : int) = 
             (min_date, max_date)
             |> this.Pricerecords.GetAllOrderedInRange
             |> this.UnpackListSomeOrNone
             |> List.map (fun (key, values) -> (key, values |> List.filter (fun data -> data.CPair.Id = currency_pair_id && data.Provider.Id = provider_id )))
             |> fun x -> match x with | [] -> None | _ -> Some(x) 
 
+        //Filter the price records with possibly null filters and concat the results of the previous functions
+        //hence the individual checking for the binded type
         member this.FilterRecords(filters : Filters) =
             let minDate = if filters.minDate <> "" then 
                             filters.minDate
@@ -126,6 +160,7 @@ module UnitOfWork =
                         else []
             let provider = this.GetPriceRecordsByProviders(filters.provider |> int) |> this.UnpackListSomeOrNone 
 
+            //Concat the data from each function assuring they are not duplicate in pairs
             (((((pairs @ provider) |> List.distinct) @ minDate |> List.distinct ) @ maxDate |> List.distinct) @ maxQuantity |> List.distinct) @minQuantity |> List.distinct |> this.PackListSomeOrNone
 
 
@@ -154,39 +189,10 @@ module UnitOfWork =
                 None
             with
                 err -> Some err
-           
-        member this.InsertProvider(new_registry : ProviderItem) = 
-            this.Providers.Insert(new_registry) |> ignore //Insert into the context
-            this.Complete() |> ignore //Calls the context to save the changes
-            None // None for matching the return
-            //TODO add validation for the complete and insert function returns
-
-        member this.UpdateProvider(update_registry : ProviderItem) =
-            try 
-                let record = this.Pricerecords.GetById<ProviderItem>(update_registry.Id)
-                record.Name <- update_registry.Name
-                this.Complete()
-                None
-            with
-                err -> Some err
-
-        member this.InsertCurrencyPair(new_registry : CurrencyPairItem) = 
-            this.CRPairs.Insert(new_registry) |> ignore //Insert into the context
-            this.Complete() |> ignore //Calls the context to save the changes
-            None // None for matching the return
-            //TODO add validation for the complete and insert function returns
-
-        member this.UpdateCurrencyPair(update_registry : CurrencyPairItem) =
-            try 
-                let record = this.CRPairs.GetById<CurrencyPairItem>(update_registry.Id)
-                record.Label <- update_registry.Label
-                this.Complete()
-                None
-            with
-                err -> Some err
-
+        //Register the results in the context
         member this.Complete() =
             context.SaveChanges() |> ignore
+        //Disregard the context, destroying all not saved
         member this.Dispose =
             context.Dispose() |> ignore
 
