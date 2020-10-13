@@ -4,6 +4,7 @@
 2. Change your directory to src/RepositoryManager/
 2. Run `dotnet tool restore` to restore all necessary tools
 3. Run `dotnet run` and make sure to allow the host in the firewall, if using Windows
+4. Alternatively, you can also run `dotnet fake build -t Run` in the main directory
 
 ### Database
 
