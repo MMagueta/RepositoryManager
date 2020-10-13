@@ -23,4 +23,4 @@ Library mentioned: https://github.com/efcore/EFCore.FSharp (Not available as a n
 #### HOST
 
 * The host will receive PUT, GET, POST and DELETE requests at localhost:8085/
-* For checking the simple client side, go to localhost:8085/data/plot/<ID OF A PROVIDER>/<ID OF A CURRENCY PAIR> or localhost:8085/data/table/<ID OF A PROVIDER>/<ID OF A CURRENCY PAIR>
+* For checking the simple client side, go to localhost:8085/data/plot/<ID OF A PROVIDER>/<ID OF A CURRENCY PAIR> or localhost:8085/data/table/ID_OF_A_PROVIDER/ID_OF_A_CURRENCY PAIR - For example, localhost:8085/data/table/1/1
